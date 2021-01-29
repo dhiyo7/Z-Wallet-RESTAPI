@@ -223,7 +223,7 @@ module.exports = {
     authLogin: (body) => {
         return new Promise((resolve, reject) => {
             const { email, password } = body
-            const queryStr = `SELECT id, email, password,is_active, set_pin FROM tb_user WHERE email = ?`
+            const queryStr = `SELECT id, email,name, password,is_active, pin FROM tb_user WHERE email = ?`
             db.query(queryStr, email, (err, data) => {
                 if (err) {
                     reject({
