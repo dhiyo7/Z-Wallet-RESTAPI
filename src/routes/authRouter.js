@@ -12,7 +12,7 @@ authRouter.patch('/PIN',checkToken.isLogin, authController.SetPIN)
 //use it only for change PIN
 authRouter.get('/checkPIN/:PIN', checkToken.isLogin, authController.CheckPIN)
 
-authRouter.patch('/changePassword', authController.changePassword)
+authRouter.patch('/changePassword',checkToken.isLogin, authController.changePassword)
 authRouter.post('/forgot', authController.ForgotEmail)
 authRouter.post('/findOTP', authController.CheckOTP)
 authRouter.patch('/userInfo/:id',checkToken.isLogin, authController.ChangePersonalInfo)

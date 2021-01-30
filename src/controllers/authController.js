@@ -76,8 +76,9 @@ module.exports = {
             })
     },
     changePassword:(req,res) =>{
+        const {email} = req.decodedToken
         const {body} = req
-        authModel.userChangePassword(body)
+        authModel.userChangePassword(body, email)
         .then((result) => {
             res.status(result.status).json(result)
         }).catch((error) => {

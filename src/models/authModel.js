@@ -464,9 +464,9 @@ module.exports = {
             })
         })
     },
-    userChangePassword: (body) => {
+    userChangePassword: (body, email) => {
         return new Promise((resolve, reject) => {
-            const { email, old_password, new_password } = body
+            const {old_password, new_password } = body
             const queryStr = `SELECT password FROM tb_user WHERE email = ?`
             db.query(queryStr, email, (err, data) => {
                 if (!err) {
