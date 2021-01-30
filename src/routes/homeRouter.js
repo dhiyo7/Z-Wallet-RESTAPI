@@ -4,9 +4,9 @@ const checkToken = require('../helpers/checkToken')
 const homeRouter = express.Router()
 
 homeRouter.get('/getBalance/:id', checkToken.isLogin, homeController.getBalance)
-homeRouter.get('/getBalanceIn/:id', checkToken.isLogin, homeController.getBalanceIn)
-homeRouter.get('/getBalanceOut/:id', checkToken.isLogin, homeController.getBalanceOut)
-homeRouter.get('/getAllTranfer/:id', checkToken.isLogin, homeController.getAllTranfer)
+homeRouter.get('/getBalanceIn', checkToken.isLogin, homeController.getBalanceIn)
+homeRouter.get('/getBalanceOut', checkToken.isLogin, homeController.getBalanceOut)
+homeRouter.get('/getAllTranfer', checkToken.isLogin, homeController.getAllTranfer)
 
 
 module.exports = homeRouter

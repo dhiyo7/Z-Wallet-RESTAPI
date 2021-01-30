@@ -109,7 +109,7 @@ module.exports = {
     },
     isPIN: (req, res, next) => {
         const email = req.decodedToken.email
-        const PIN = req.header("PIN")
+        const PIN = req.header("x-access-PIN")
         if (!PIN) {
             res.status(401).json({
                 status: 401,

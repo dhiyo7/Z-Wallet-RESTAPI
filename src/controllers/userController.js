@@ -4,7 +4,7 @@ module.exports = {
     changePassword:(req,res) =>{
         const {email} = req.decodedToken
         const {body} = req
-        authModel.userChangePassword(body, email)
+        userModel.userChangePassword(body, email)
         .then((result) => {
             res.status(result.status).json(result)
         }).catch((error) => {
@@ -13,8 +13,8 @@ module.exports = {
     },
     ChangePersonalInfo: (req, res) => {
         const { body } = req
-        const { id } = req.params
-        authModel.userChangeInfo(body, id)
+        const { id } = req.decodedToken
+        userModel.userChangeInfo(body, id)
             .then((result) => {
                 res.status(result.status).json(result)
             }).catch((error) => {

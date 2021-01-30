@@ -9,13 +9,13 @@ module.exports = {
                 amount: amount,
                 type: 1
             }
-            const queryStr = `INSERT INTO tb_tranfer SET = ?`
+            const queryStr = `INSERT INTO tb_tranfer SET ?`
             db.query(queryStr, dataTranfer, (err, data) => {
                 if (!err) {
                     dataTranfer = {
                         ...dataTranfer, type: 2
                     }
-                    const queryStr = `INSERT INTO tb_tranfer SET = ?`
+                    const queryStr = `INSERT INTO tb_tranfer SET ?`
                     db.query(queryStr, dataTranfer, (err, data) => {
                         if (!err) {
                             resolve({
@@ -78,25 +78,25 @@ module.exports = {
             })
         })
     },
-    searchReceiver: (name) =>{
-        return new Promise ((resolve, reject) =>{
-            const queryStr = `SELECT image, phone, name FROM tb_user WHERE name LIKE '%${name}%'`
-            db.query(queryStr, (err, data) =>{
-                if(!err){
-                    if(data.length > 0){
+    searchReceiver: (name) => {
+        return new Promise((resolve, reject) => {
+            const queryStr = `SELECT id, name, phone, image FROM tb_user WHERE name LIKE '%${name}%'`
+            db.query(queryStr, (err, data) => {
+                if (!err) {
+                    if (data.length > 0) {
                         resolve({
-                            status:200,
-                            message:`Pencarian untuk ${name} ditemukan`,
-                            data:data
+                            status: 200,
+                            message: `Pencarian untuk ${name} ditemukan`,
+                            data: data
                         })
-                    }else{
+                    } else {
                         reject({
-                            status:404,
-                            message:`Pencarian tidak ditemukan`,
-                            data:[]
+                            status: 404,
+                            message: `Pencarian tidak ditemukan`,
+                            data: []
                         })
                     }
-                }else{
+                } else {
                     reject({
                         status: 500,
                         message: `internal server error`,
@@ -106,4 +106,30 @@ module.exports = {
             })
         })
     },
+    getAllContact: (id) => {
+        return new Promise((resolve, reject) => {
+            const queryStr = `SELECT id, name, phone, image FROM tb_user WHERE NOT ID = ? AND is_active = 1`
+            db.query(queryStr, id, (err, data) => {
+                if (!err) {
+                    if (data.length > 0) {
+                        resolve({
+                            status: 200,
+                            data: data
+                        })
+                    } else {
+                        reject({
+                            status: 404,
+                            data: []
+                        })
+                    }
+                } else {
+                    reject({
+                        status: 500,
+                        message: `internal server error`,
+                        details: err
+                    })
+                }
+            })
+        })
+    }
 }

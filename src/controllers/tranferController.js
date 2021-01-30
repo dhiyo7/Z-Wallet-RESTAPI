@@ -20,13 +20,22 @@ module.exports = {
                 res.status(error.status).json(error)
             })
     },
-    searchReceiver:(req, res) =>{
-        const {name} = req.query
+    searchReceiver: (req, res) => {
+        const { name } = req.query
         tranferModel.searchReceiver(name)
-        .then((result) =>{
-            res.status(result.status).json(result)
-        }).catch((error) => {
-            res.status(error.status).json(error)
-        })
+            .then((result) => {
+                res.status(result.status).json(result)
+            }).catch((error) => {
+                res.status(error.status).json(error)
+            })
+    },
+    getAllContact: (req, res) => {
+        const { id } = req.decodedToken
+        tranferModel.getAllContact(id)
+            .then((result) => {
+                res.status(result.status).json(result)
+            }).catch((error) => {
+                res.status(error.status).json(error)
+            })
     },
 }

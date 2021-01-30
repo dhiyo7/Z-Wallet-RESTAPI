@@ -1,4 +1,5 @@
 const db = require('../config/mySQL')
+const bcrypt = require('bcrypt')
 
 module.exports = {
     userChangeInfo: (body, id) => { //includes all userData (PIN, PhoneNumber, and etc.)
@@ -9,7 +10,7 @@ module.exports = {
                     resolve({
                         status: 200,
                         message: `Data berhasil diubah`,
-                        details: body
+                        data: body
                     })
                 } else {
                     reject({
