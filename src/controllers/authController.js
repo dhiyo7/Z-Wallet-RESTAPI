@@ -75,6 +75,15 @@ module.exports = {
                 res.status(error.status).json(error)
             })
     },
+    changePassword:(req,res) =>{
+        const {body} = req
+        authModel.userChangePassword(body)
+        .then((result) => {
+            res.status(result.status).json(result)
+        }).catch((error) => {
+            res.status(error.status).json(error)
+        })
+    },
     ChangePersonalInfo: (req, res) => {
         const { body } = req
         const { id } = req.params
