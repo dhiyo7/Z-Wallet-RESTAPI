@@ -4,7 +4,7 @@ const authRouter = express.Router()
 
 const checkToken = require('../helpers/checkToken')
 
-authRouter.post('/signup', authController.Signup)
+authRouter.post('/signup',checkToken.isRegistered, checkToken.phoneUsed,authController.Signup)
 authRouter.get('/activate/:email/:otp', authController.ActivateAccount)
 authRouter.post('/resend',authController.ResendActivationCode)
 authRouter.post('/login',authController.Login)

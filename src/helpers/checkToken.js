@@ -11,16 +11,17 @@ module.exports = {
                 if (!err) {
                     if (!data[0]) {
                         resolve({
-                            msg: `success`
+                            message: `success`
                         })
                     } else {
                         reject({
-                            msg: `Email telah digunakan!`
+                            status:401,
+                            message: `Email telah digunakan!`
                         })
                     }
                 } else {
                     reject({
-                        msg: `SQLquery ERROR!`,
+                        message: `SQLquery ERROR!`,
                         details: err
                     })
                 }
@@ -28,14 +29,44 @@ module.exports = {
         }).then((result) => {
             next()
         }).catch((error) => {
-            res.status(500).json(error)
+            res.status(error.status).json(error)
+        })
+    },
+    phoneUsed: (req, res, next) =>{
+        const {phone} = req.body
+        const checkAvailable = new Promise ((resolve, reject) =>{
+            const queryStr = `SELECT phone FROM tb_user WHERE phone = ?`
+            db.query(queryStr,phone, (err, data) =>{
+                if(!err){
+                    if(data.length > 0){
+                        reject({
+                            status:401,
+                            message:`No. HP sudah digunakan`
+                        })
+                    }else{
+                        resolve({
+                            status:200
+                        })
+                    }
+                }else{
+                    reject({
+                        status:500,
+                        message:`INTERNAL SERVER ERROR`,
+                        details:err
+                    })
+                }
+            })
+        }).then((result) =>{
+            next()
+        }).catch((error) =>{
+            res.status(error.status).json(error)
         })
     },
     isLogin: (req, res, next) => {
         const bearerToken = req.header("x-access-token");
         if (!bearerToken) {
             res.json({
-                msg: `Please login first`,
+                message: `Please login first`,
                 status: 401
             })
         } else {
@@ -55,7 +86,7 @@ module.exports = {
                     } else {
                         reject({
                             status: 500,
-                            msg: err
+                            message: err
                         })
                     }
                 })

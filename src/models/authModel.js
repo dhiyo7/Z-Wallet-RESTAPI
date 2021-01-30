@@ -6,59 +6,74 @@ const nodemailer = require('nodemailer')
 
 module.exports = {
     authSignup: (body) => {
-        return new Promise((resolve, rejects) => {
+        return new Promise((resolve, reject) => {
             const saltRounds = Math.floor(Math.random() * 10) + 1
             bcrypt.hash(body.password, saltRounds, (err, hashedPassword) => { //hashPW
                 const newUser = { ...body, password: hashedPassword }
                 const queryStr = `INSERT INTO tb_user SET ?`
                 db.query(queryStr, newUser, (err, data) => {
                     if (!err) {
-                        const otpCode = otp.generate(6, { alphabets: true, upperCase: true, specialChars: false })
-                        const OTPsend = {
-                            email: body.email,
-                            otp: otpCode
+                        const newBalance = {
+                            id_user: data.insertId,
+                            balance: 0
                         }
-                        const queryStr = `INSERT INTO tb_otp_activation SET ?`
-                        db.query(queryStr, OTPsend, (err, data) => {
+                        const insertBalance = `INSERT INTO tb_balance SET ?`
+                        db.query(insertBalance, newBalance, (err, data) => {
                             if (!err) {
-                                let transporter = nodemailer.createTransport({
-                                    service: 'gmail',
-                                    host: 'smtp.gmail.com',
-                                    port: 578,
-                                    secure: false,
-                                    auth: {
-                                        user: process.env.USER_EMAIL,
-                                        pass: process.env.PASS_EMAIL
-                                    }
-                                })
-                                let mailOptions = {
-                                    from: "zWallet Team <zWallet@arkademy.mail.com>",
-                                    to: body.email,
-                                    subject: 'OTP Code Activation Account',
-                                    html:
-                                        ` 
+                                const otpCode = otp.generate(6, { alphabets: true, upperCase: true, specialChars: false })
+                                const OTPsend = {
+                                    email: body.email,
+                                    otp: otpCode
+                                }
+                                const queryStr = `INSERT INTO tb_otp_activation SET ?`
+                                db.query(queryStr, OTPsend, (err, data) => {
+                                    if (!err) {
+                                        let transporter = nodemailer.createTransport({
+                                            service: 'gmail',
+                                            host: 'smtp.gmail.com',
+                                            port: 578,
+                                            secure: false,
+                                            auth: {
+                                                user: process.env.USER_EMAIL,
+                                                pass: process.env.PASS_EMAIL
+                                            }
+                                        })
+                                        let mailOptions = {
+                                            from: "zWallet Team <zWallet@arkademy.mail.com>",
+                                            to: body.email,
+                                            subject: 'OTP Code Activation Account',
+                                            html:
+                                                ` 
                                                 <h1> OTP CODE from zWallet Team </h1>
                                                 <p> Hello, this is you OTP code</p>
                                                 <h2><strong>${otpCode}</strong></h2> 
                                                 <p> Use it to Activate Account </p>
                                                 `
-                                }
-                                transporter.sendMail(mailOptions, (err, data) => {
-                                    if (err) {
-                                        console.log("Its Error: ", err);
-                                        rejects({
-                                            status: 500,
-                                            message: err
+                                        }
+                                        transporter.sendMail(mailOptions, (err, data) => {
+                                            if (err) {
+                                                console.log("Its Error: ", err);
+                                                rejects({
+                                                    status: 500,
+                                                    message: err
+                                                })
+                                            } else {
+                                                console.log(`Sent to ${body.email} Success!!!!`);
+                                                resolve({
+                                                    status: 200,
+                                                    message: `Kode OTP telah dikirim ke email anda`
+                                                })
+                                            }
                                         })
+
                                     } else {
-                                        console.log(`Sent to ${body.email} Success!!!!`);
-                                        resolve({
-                                            status: 200,
-                                            message: `Kode OTP telah dikirim ke email anda`
+                                        reject({
+                                            status: 500,
+                                            message: `Internal server error`,
+                                            details: err
                                         })
                                     }
                                 })
-
                             } else {
                                 reject({
                                     status: 500,
@@ -67,9 +82,11 @@ module.exports = {
                                 })
                             }
                         })
+
                     } else {
                         reject({
-                            msg: `ERROR!`,
+                            status: 500,
+                            message: `Internal server error`,
                             details: err
                         })
                     }
