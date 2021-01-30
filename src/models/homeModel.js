@@ -6,7 +6,8 @@ module.exports = {
             const queryStr =
                 `SELECT u.id, u.name , b.balance 
             FROM tb_balance b
-            JOIN tb_user u ON b.id_user = u.id WHERE u.id = ?`
+            JOIN tb_user u ON b.id_user = u.id 
+            WHERE u.id = ?`
             db.query(queryStr, id, (err, data) => {
                 if (!err) {
                     if (data.length > 0) {
@@ -26,7 +27,7 @@ module.exports = {
             })
         })
     },
-    getBalanceIn: (id, wheredatebetween) => {
+    getBalanceIn: (id) => {
         return new Promise((resolve, reject) => {
             const queryStr =
                 `SELECT t.sender, u.name as sender, t.receiver, us.name as receiver, t.amount, tp.type, t.created_at
@@ -34,9 +35,8 @@ module.exports = {
             JOIN tb_user u ON u.id = t.sender
             JOIN tb_user us ON us.id = t.receiver
             JOIN tb_type_transfer tp ON t.type = tp.id
-            WHERE t.receiver = ? AND tp.type 'in'`
-                + wheredatebetween +
-                `ORDER BY t.created_at DESC
+            WHERE t.receiver = ? AND tp.type 'in'
+            ORDER BY t.created_at DESC
             LIMIT 7 OFFSET 0
             `
             db.query(queryStr, id, (err, data) => {
@@ -48,8 +48,8 @@ module.exports = {
                             data: data
                         })
                     } else {
-                        reject({
-                            status: 404,
+                        resolve({
+                            status: 200,
                             message: `Daftar transaksi tidak ditemukan`,
                             data: []
                         })
@@ -64,7 +64,7 @@ module.exports = {
             })
         })
     },
-    getBalanceOut: (id, wheredatebetween) => {
+    getBalanceOut: (id) => {
         return new Promise((resolve, reject) => {
             const queryStr =
                 `SELECT t.sender, u.name as sender, t.receiver, us.name as receiver, t.amount, tp.type, t.created_at
@@ -72,9 +72,8 @@ module.exports = {
             JOIN tb_user u ON u.id = t.sender
             JOIN tb_user us ON us.id = t.receiver
             JOIN tb_type_transfer tp ON t.type = tp.id
-            WHERE t.sender = ? AND tp.type 'out'`
-                + wheredatebetween +
-                `ORDER BY t.created_at DESC
+            WHERE t.sender = ? AND tp.type 'out'
+            ORDER BY t.created_at DESC
             LIMIT 7 OFFSET 0
             `
             db.query(queryStr, id, (err, data) => {
@@ -87,7 +86,7 @@ module.exports = {
                         })
                     } else {
                         reject({
-                            status: 404,
+                            status: 200,
                             message: `Daftar transaksi tidak ditemukan`,
                             data: []
                         })

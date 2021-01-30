@@ -21,7 +21,7 @@ module.exports = {
             })
     },
     searchReceiver:(req, res) =>{
-        const {name} = req.body
+        const {name} = req.query
         tranferModel.searchReceiver(name)
         .then((result) =>{
             res.status(result.status).json(result)
