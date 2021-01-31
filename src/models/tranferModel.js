@@ -1,12 +1,13 @@
 const db = require('../config/mySQL')
 
 module.exports = {
-    postNewTranfer: (sender, receiver, amount) => {
+    postNewTranfer: (sender, receiver, amount, notes) => {
         return new Promise((resolve, reject) => {
             let dataTranfer = {
                 sender: sender,
                 receiver: receiver,
                 amount: amount,
+                notes:notes,
                 type: 1
             }
             const queryStr = `INSERT INTO tb_tranfer SET ?`

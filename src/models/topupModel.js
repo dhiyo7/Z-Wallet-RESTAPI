@@ -52,6 +52,7 @@ module.exports = {
                 sender: topupCenter,
                 receiver: id,
                 amount: amount,
+                notes:`Topup Balance`,
                 type: 2
             }
             console.log('here')

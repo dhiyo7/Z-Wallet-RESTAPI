@@ -2,8 +2,8 @@ const tranferModel = require('../models/tranferModel')
 
 module.exports = {
     tranferBalance: (req, res) => {
-        const { sender, receiver, amount } = req.body
-        tranferModel.postNewTranfer(sender, receiver, amount)
+        const { sender, receiver, amount, notes } = req.body
+        tranferModel.postNewTranfer(sender, receiver, amount, notes)
             .then((result) => {
                 Promise.all([
                     tranferModel.reduceBalance(sender, amount),

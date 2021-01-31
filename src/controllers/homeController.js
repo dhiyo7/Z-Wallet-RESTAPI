@@ -10,22 +10,27 @@ module.exports = {
                 res.status(error.status).json(error)
             })
     },
-    getBalanceIn: (req, res) => {
+    getBalanceInOut: (req, res) => {
         const { id } = req.decodedToken
-        const {from, to} = req.query
+        const {from, to, today, thisWeek, thisMonth} = req.query
+        let {flow} = req.query
         let additionalQuery=''
-        // if(from !=null && to !=null)
-        // additionalQuery = `AND t.created_at BETWEEN CONVERT(datetime,'${from}') AND CONVERT(datetime,'${to} 23:59:59:999')`
-        homeModel.getBalanceIn(id, additionalQuery)
-            .then((result) => {
-                res.status(result.status).json(result)
-            }).catch((error) => {
-                res.status(error.status).json(error)
-            })
-    },
-    getBalanceOut: (req, res) => {
-        const { id } = req.decodedToken
-        homeModel.getBalanceOut(id)
+        if(from !=null && to !=null){
+            additionalQuery = `AND t.created_at BETWEEN '${from} 00:00:00' AND '${to} 23:59:59'`
+        }
+        if(today){
+            additionalQuery = `AND t.created_at >= CURRENT_DATE`
+        }
+        if(thisWeek){
+            additionalQuery = `AND WEEK(t.created_at,1) = WEEK(CURRENT_DATE,1) AND YEAR(t.created_at) = YEAR(CURRENT_DATE)`
+        }
+        if(thisMonth){
+            additionalQuery = `AND MONTH(t.created_at) = MONTH(CURRENT_DATE) AND YEAR(t.created_at) = YEAR(CURRENT_DATE)`
+        }
+        if(flow == null){
+            flow = 'out'
+        }
+        homeModel.getBalanceInOut(id, additionalQuery,flow)
             .then((result) => {
                 res.status(result.status).json(result)
             }).catch((error) => {
@@ -34,13 +39,31 @@ module.exports = {
     },
     getAllTranfer: (req, res) => {
         const { id } = req.decodedToken
+        const {from, to, today, thisWeek, thisMonth} = req.query
+        let additionalQuery=''
+        let sortBy=''
+        if(from !=null && to !=null){
+            additionalQuery = `AND t.created_at BETWEEN '${from} 00:00:00' AND '${to} 23:59:59'`
+        }
+        if(today){
+            additionalQuery = `AND t.created_at >= CURRENT_DATE`
+        }
+        if(thisWeek){
+            additionalQuery = `AND WEEK(t.created_at,1) = WEEK(CURRENT_DATE,1) AND YEAR(t.created_at) = YEAR(CURRENT_DATE)`
+        }
+        if(thisMonth){
+            additionalQuery = `AND MONTH(t.created_at) = MONTH(CURRENT_DATE) AND YEAR(t.created_at) = YEAR(CURRENT_DATE)`
+        }
         Promise.all([
-            homeModel.getBalanceIn(id),
-            homeModel.getBalanceOut(id)
+            homeModel.getBalanceInOut(id, additionalQuery,'in'),
+            homeModel.getBalanceInOut(id, additionalQuery,'out')
         ]).then((result) => {
             let newTranfer = result[0].data.concat(result[1].data)
             newTranfer = newTranfer.sort((a, b) => {
                 return b.created_at - a.created_at
+            })
+            newTranfer = newTranfer.filter((value, index) =>{
+                return index < 7 
             })
             res.status(200).json({
                 status: 200,
