@@ -12,5 +12,5 @@ https://documenter.getpostman.com/view/13530339/TW6xoU7C
   ```
 
 ### IMPORTANT
-add folder public/images in root folder
-then adD file 'default.jpg' for default user profile picture
+Add folder public/images in root folder,
+then add file 'default.jpg' for default user profile picture.
