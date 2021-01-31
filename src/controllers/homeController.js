@@ -2,7 +2,7 @@ const homeModel = require('../models/homeModel')
 
 module.exports = {
     getBalance: (req, res) => {
-        const { id } = req.params
+        const { id } = req.decodedToken
         homeModel.getBalance(id)
             .then((result) => {
                 res.status(result.status).json(result)
@@ -41,7 +41,6 @@ module.exports = {
         const { id } = req.decodedToken
         const {from, to, today, thisWeek, thisMonth} = req.query
         let additionalQuery=''
-        let sortBy=''
         if(from !=null && to !=null){
             additionalQuery = `AND t.created_at BETWEEN '${from} 00:00:00' AND '${to} 23:59:59'`
         }

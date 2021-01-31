@@ -55,7 +55,6 @@ module.exports = {
                 notes:`Topup Balance`,
                 type: 2
             }
-            console.log('here')
             const queryStr = `INSERT INTO tb_tranfer SET ?`
             db.query(queryStr, dataTranfer, (err, data) => {
                 if (!err) {

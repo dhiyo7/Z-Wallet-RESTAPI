@@ -2,7 +2,8 @@ const tranferModel = require('../models/tranferModel')
 
 module.exports = {
     tranferBalance: (req, res) => {
-        const { sender, receiver, amount, notes } = req.body
+        const sender = req.decodedToken.id
+        const { receiver, amount, notes } = req.body
         tranferModel.postNewTranfer(sender, receiver, amount, notes)
             .then((result) => {
                 Promise.all([
@@ -22,7 +23,8 @@ module.exports = {
     },
     searchReceiver: (req, res) => {
         const { name } = req.query
-        tranferModel.searchReceiver(name)
+        const { id } = req.decodedToken
+        tranferModel.searchReceiver(name, id)
             .then((result) => {
                 res.status(result.status).json(result)
             }).catch((error) => {

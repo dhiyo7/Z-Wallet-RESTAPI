@@ -79,10 +79,10 @@ module.exports = {
             })
         })
     },
-    searchReceiver: (name) => {
+    searchReceiver: (name, id) => {
         return new Promise((resolve, reject) => {
-            const queryStr = `SELECT id, name, phone, image FROM tb_user WHERE name LIKE '%${name}%'`
-            db.query(queryStr, (err, data) => {
+            const queryStr = `SELECT id, name, phone, image FROM tb_user WHERE name LIKE '%${name}%' AND NOT id = ${id}`
+            db.query(queryStr,(err, data) => {
                 if (!err) {
                     if (data.length > 0) {
                         resolve({

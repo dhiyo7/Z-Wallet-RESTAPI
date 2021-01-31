@@ -1,6 +1,5 @@
 const multer = require("multer");
 const path = require("path");
-const form = require("./form");
 
 const multerStorage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -20,13 +19,13 @@ const upload = multer({
 });
 
 const multiUpload = (req, res, next) => {
-    const uploadMultiple = upload.array("product_img", 5);
+    const uploadMultiple = upload.array("image", 5);
     uploadMultiple(req, res, (err) => {
         if (err) {
-            form.error(res, {
-                msg: "Multer Error",
-                err,
-            });
+            res.status(500).json({
+                message:'Multer ERROR',
+                details:err
+            })
         } else {
             let filePath = req.files.map((val) => "/images/" + val.filename)
 
