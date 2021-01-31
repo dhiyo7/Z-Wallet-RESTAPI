@@ -34,33 +34,37 @@ module.exports = {
     },
     phoneUsed: (req, res, next) =>{
         const {phone} = req.body
-        const checkAvailable = new Promise ((resolve, reject) =>{
-            const queryStr = `SELECT phone FROM tb_user WHERE phone = ?`
-            db.query(queryStr,phone, (err, data) =>{
-                if(!err){
-                    if(data.length > 0){
-                        reject({
-                            status:401,
-                            message:`No. HP sudah digunakan`
-                        })
+        if(phone != undefined){
+            const checkAvailable = new Promise ((resolve, reject) =>{
+                const queryStr = `SELECT phone FROM tb_user WHERE phone = ?`
+                db.query(queryStr,phone, (err, data) =>{
+                    if(!err){
+                        if(data.length > 0){
+                            reject({
+                                status:401,
+                                message:`No. HP sudah digunakan`
+                            })
+                        }else{
+                            resolve({
+                                status:200
+                            })
+                        }
                     }else{
-                        resolve({
-                            status:200
+                        reject({
+                            status:500,
+                            message:`INTERNAL SERVER ERROR`,
+                            details:err
                         })
                     }
-                }else{
-                    reject({
-                        status:500,
-                        message:`INTERNAL SERVER ERROR`,
-                        details:err
-                    })
-                }
+                })
+            }).then((result) =>{
+                next()
+            }).catch((error) =>{
+                res.status(error.status).json(error)
             })
-        }).then((result) =>{
+        }else{
             next()
-        }).catch((error) =>{
-            res.status(error.status).json(error)
-        })
+        } 
     },
     isLogin: (req, res, next) => {
         const bearerToken = req.header("x-access-token");
