@@ -5,7 +5,7 @@ module.exports = {
     getBalance: (id) => {
         return new Promise((resolve, reject) => {
             const queryStr =
-                `SELECT u.id, u.name , b.balance 
+                `SELECT u.id, CONCAT(u.firstname,' ', u.lastname) as name , b.balance 
             FROM tb_balance b
             JOIN tb_user u ON b.id_user = u.id 
             WHERE u.id = ?`
@@ -37,7 +37,7 @@ module.exports = {
         }
         return new Promise((resolve, reject) => {
             const queryStr =
-                `SELECT t.id,t.sender, u.name as sender, t.receiver, us.name as receiver, t.amount,t.notes, tp.type, t.created_at
+                `SELECT t.id,t.sender, CONCAT(u.firstname,' ',u.lastname) as sender, t.receiver, CONCAT(us.firstname,' ', us.lastname) as receiver, t.amount,t.notes, tp.type, t.created_at
             FROM tb_tranfer t
             JOIN tb_user u ON u.id = t.sender
             JOIN tb_user us ON us.id = t.receiver

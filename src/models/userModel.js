@@ -83,24 +83,6 @@ module.exports = {
             })
         })
     },
-    userChangePhoto: (image, id) => {
-        return new Promise((resolve, reject) => {
-            const queryStr = `UPDATE tb_user SET image = ? WHERE id = ?`
-            db.query(queryStr, [image, id], (err, data) => {
-                if (!err) {
-                    resolve({
-                        status: 200,
-                        message: `Berhasil mengubah foto profil`
-                    })
-                } else {
-                    reject({
-                        status: 500,
-                        message: err
-                    })
-                }
-            })
-        })
-    },
     getOldPhoto: (id) =>{
         return new Promise ((resolve, reject) =>{
             const queryStr = `SELECT image FROM tb_user WHERE id = ?`

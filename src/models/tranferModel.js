@@ -81,7 +81,7 @@ module.exports = {
     },
     searchReceiver: (name, id) => {
         return new Promise((resolve, reject) => {
-            const queryStr = `SELECT id, name, phone, image FROM tb_user WHERE name LIKE '%${name}%' AND NOT id = ${id}`
+            const queryStr = `SELECT id, CONCAT(firstname, lastname) as name, phone, image FROM tb_user WHERE CONCAT(firstname, lastname) LIKE '%${name}%' AND NOT id = ${id}`
             db.query(queryStr,(err, data) => {
                 if (!err) {
                     if (data.length > 0) {
@@ -109,7 +109,7 @@ module.exports = {
     },
     getAllContact: (id) => {
         return new Promise((resolve, reject) => {
-            const queryStr = `SELECT id, name, phone, image FROM tb_user WHERE NOT ID = ? AND is_active = 1`
+            const queryStr = `SELECT id, CONCAT(firstname, lastname) as name, phone, image FROM tb_user WHERE NOT id = ? AND is_active = 1`
             db.query(queryStr, id, (err, data) => {
                 if (!err) {
                     if (data.length > 0) {

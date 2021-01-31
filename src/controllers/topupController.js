@@ -6,7 +6,7 @@ module.exports = {
         phone = phone.toString().replace('23890', '+62')
         topupModel.getIdUser(phone)
             .then((result) => {
-                const topupCenter = 14 //hardcoded
+                const topupCenter = 1 //hardcoded
                 Promise.all([
                     topupModel.insertTranfer(topupCenter, result.data, amount),
                     topupModel.topupBalance(result.data, amount)

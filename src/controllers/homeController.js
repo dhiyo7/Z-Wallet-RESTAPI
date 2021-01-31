@@ -19,10 +19,10 @@ module.exports = {
             additionalQuery = `AND t.created_at BETWEEN '${from} 00:00:00' AND '${to} 23:59:59'`
         }
         if(today){
-            additionalQuery = `AND t.created_at >= CURRENT_DATE`
+            additionalQuery = `AND t.created_at >= CURRENT_DATE` 
         }
         if(thisWeek){
-            additionalQuery = `AND WEEK(t.created_at,1) = WEEK(CURRENT_DATE,1) AND YEAR(t.created_at) = YEAR(CURRENT_DATE)`
+            additionalQuery = `AND WEEK(t.created_at,1)  = WEEK(CURRENT_DATE,1) AND YEAR(t.created_at) = YEAR(CURRENT_DATE)`
         }
         if(thisMonth){
             additionalQuery = `AND MONTH(t.created_at) = MONTH(CURRENT_DATE) AND YEAR(t.created_at) = YEAR(CURRENT_DATE)`
