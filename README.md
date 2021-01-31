@@ -22,6 +22,6 @@ MYSQL_USER = "mySQL_user"
 MYSQL_PASSWORD = "mySQL_password"
 MYSQL_DATABASE = "mySQL_db"
 USER_EMAIL = your_smtp-email@gmail.com
-PASS_EMAIL = your_smtp_assword
+PASS_EMAIL = your_smtp_password
 SECRET_KEY = "YOUR_SECRET_KEY"
 ```
