@@ -54,19 +54,18 @@ module.exports = {
             additionalQuery = `AND MONTH(t.created_at) = MONTH(CURRENT_DATE) AND YEAR(t.created_at) = YEAR(CURRENT_DATE)`
         }
         Promise.all([
-            homeModel.getBalanceInOut(id, additionalQuery,'in'),
-            homeModel.getBalanceInOut(id, additionalQuery,'out')
+            homeModel.getBalanceInOut(id, additionalQuery,'in'), // 7 row
+            homeModel.getBalanceInOut(id, additionalQuery,'out') // 7 row
         ]).then((result) => {
             let newTranfer = result[0].data.concat(result[1].data)
             
-            newTranfer = newTranfer.sort((a, b) => {
+            newTranfer = newTranfer.sort((a, b) => { //sort date desc
                 return b.created_at - a.created_at
             })
-            console.log(newTranfer)
             newTranfer = newTranfer.filter((value, index) =>{
-                return index < 7 
+                return index < 7  // biar cuma 7
             })
-            console.log(newTranfer)
+    
             res.status(200).json({
                 status: 200,
                 message: `Berhasil menampilkan data`,

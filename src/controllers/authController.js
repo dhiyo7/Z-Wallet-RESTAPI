@@ -76,6 +76,7 @@ module.exports = {
             })
     },
     deleteTokenLogout: (req, res) => {
+        // const token = req.header("x-access-token"); //
         const { token } = req.params
         authModel.deleteTokenLogout(token)
             .then((result) => {

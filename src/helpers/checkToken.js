@@ -131,7 +131,7 @@ module.exports = {
                         } else {
                             reject({
                                 status: 404,
-                                message: `Token tidak teridentifikasi`
+                                message: `PIN tidak teridentifikasi`
                             })
                         }
                     } else {
