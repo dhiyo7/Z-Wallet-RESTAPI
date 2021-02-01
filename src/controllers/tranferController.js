@@ -6,7 +6,7 @@ module.exports = {
         const { receiver, amount, notes } = req.body
         tranferModel.postNewTranfer(sender, receiver, amount, notes)
             .then((result) => {
-                const {details} = result
+                const { details } = result
                 Promise.all([
                     tranferModel.reduceBalance(sender, amount),
                     tranferModel.increaseBalance(receiver, amount)
@@ -35,6 +35,15 @@ module.exports = {
     getAllContact: (req, res) => {
         const { id } = req.decodedToken
         tranferModel.getAllContact(id)
+            .then((result) => {
+                res.status(result.status).json(result)
+            }).catch((error) => {
+                res.status(error.status).json(error)
+            })
+    },
+    getTranferDetails: (req, res) => {
+        const { id } = req.params
+        tranferModel.getTranferDetails(id)
             .then((result) => {
                 res.status(result.status).json(result)
             }).catch((error) => {

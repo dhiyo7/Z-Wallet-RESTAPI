@@ -7,9 +7,9 @@ module.exports = {
                 sender: parseInt(sender),
                 receiver: parseInt(receiver),
                 amount: parseInt(amount),
-                notes:notes,
+                notes: notes,
                 type: 1,
-                created_at:new Date(Date.now())
+                created_at: new Date(Date.now())
             }
             const queryStr = `INSERT INTO tb_tranfer SET ?`
             db.query(queryStr, dataTranfer, (err, data) => {
@@ -23,7 +23,7 @@ module.exports = {
                             resolve({
                                 status: 200,
                                 message: `Tranfer sukses`,
-                                details:dataTranfer
+                                details: dataTranfer
                             })
                         } else {
                             reject({
@@ -83,8 +83,8 @@ module.exports = {
     },
     searchReceiver: (name, id) => {
         return new Promise((resolve, reject) => {
-            const queryStr = `SELECT id, CONCAT(firstname, lastname) as name, phone, image FROM tb_user WHERE CONCAT(firstname, lastname) LIKE '%${name}%' AND NOT id = ${id}`
-            db.query(queryStr,(err, data) => {
+            const queryStr = `SELECT id, CONCAT(firstname,' ', lastname) as name, phone, image FROM tb_user WHERE CONCAT(firstname, lastname) LIKE '%${name}%' AND NOT id = ${id}`
+            db.query(queryStr, (err, data) => {
                 if (!err) {
                     if (data.length > 0) {
                         resolve({
@@ -111,7 +111,7 @@ module.exports = {
     },
     getAllContact: (id) => {
         return new Promise((resolve, reject) => {
-            const queryStr = `SELECT id, CONCAT(firstname, lastname) as name, phone, image FROM tb_user WHERE NOT id = ? AND is_active = 1`
+            const queryStr = `SELECT id, CONCAT(firstname,' ',lastname) as name, phone, image FROM tb_user WHERE NOT id = ? AND is_active = 1`
             db.query(queryStr, id, (err, data) => {
                 if (!err) {
                     if (data.length > 0) {
@@ -133,6 +133,33 @@ module.exports = {
                     })
                 }
             })
+        })
+    },
+    getTranferDetails: (id) => {
+        return new Promise((resolve, reject) => {
+            const queryStr =
+                `SELECT t.id,t.sender as sender_id, CONCAT(u.firstname,' ',u.lastname) as sender,u.phone as sender_phone, u.image as sender_image, t.receiver as receiver_id, CONCAT(us.firstname,' ', us.lastname) as receiver,us.phone as receiver_phone, us.image as receiver_image, t.amount,t.notes, tp.type, t.created_at
+            FROM tb_tranfer t
+            JOIN tb_user u ON u.id = t.sender
+            JOIN tb_user us ON us.id = t.receiver
+            JOIN tb_type_transfer tp ON t.type = tp.id
+            WHERE t.id = ?`
+            db.query(queryStr, id, (err, data) => {
+                if (!err) {
+                    resolve({
+                        status: 200,
+                        message: 'berhasil mendapatkan data',
+                        data: data[0]
+                    })
+                } else {
+                    reject({
+                        status: 500,
+                        message: `Internal server error`,
+                        details: err
+                    })
+                }
+            })
+
         })
     }
 }

@@ -58,12 +58,15 @@ module.exports = {
             homeModel.getBalanceInOut(id, additionalQuery,'out')
         ]).then((result) => {
             let newTranfer = result[0].data.concat(result[1].data)
+            
             newTranfer = newTranfer.sort((a, b) => {
                 return b.created_at - a.created_at
             })
+            console.log(newTranfer)
             newTranfer = newTranfer.filter((value, index) =>{
                 return index < 7 
             })
+            console.log(newTranfer)
             res.status(200).json({
                 status: 200,
                 message: `Berhasil menampilkan data`,

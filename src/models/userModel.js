@@ -3,6 +3,24 @@ const bcrypt = require('bcrypt')
 const { query } = require('express')
 
 module.exports = {
+    getSingleUser: (id) => {
+        return new Promise((resolve, reject) => {
+            const queryStr = `SELECT CONCAT(firstname,' ',lastname) as name, phone, image FROM tb_user WHERE id = ?`
+            db.query(queryStr, id, (err, data) => {
+                if (!err) {
+                    resolve({
+                        status: 200,
+                        data: data[0]
+                    })
+                } else {
+                    reject({
+                        status: 500,
+                        message: err
+                    })
+                }
+            })
+        })
+    },
     userChangeInfo: (body, id) => { //includes all userData (PIN, PhoneNumber, and etc.)
         return new Promise((resolve, reject) => {
             const queryStr = `UPDATE tb_user SET ? WHERE id = ?`
@@ -83,47 +101,47 @@ module.exports = {
             })
         })
     },
-    getOldPhoto: (id) =>{
-        return new Promise ((resolve, reject) =>{
+    getOldPhoto: (id) => {
+        return new Promise((resolve, reject) => {
             const queryStr = `SELECT image FROM tb_user WHERE id = ?`
-            db.query(queryStr, id, (err, data) =>{
-                if(!err){
-                    if(data.length > 0){
+            db.query(queryStr, id, (err, data) => {
+                if (!err) {
+                    if (data.length > 0) {
                         resolve({
-                            status:200,
-                            image:data[0].image
+                            status: 200,
+                            image: data[0].image
                         })
-                    }else{
+                    } else {
                         reject({
-                            status:404,
-                            image:''
+                            status: 404,
+                            image: ''
                         })
                     }
-                }else{
+                } else {
                     reject({
                         status: 500,
-                        message:'Internal server error',
-                        details:err
+                        message: 'Internal server error',
+                        details: err
                     })
                 }
             })
         })
     },
-    updatePhoto: (image, id) =>{
-        return new Promise ((resolve, reject) =>{
+    updatePhoto: (image, id) => {
+        return new Promise((resolve, reject) => {
             const queryStr = `UPDATE tb_user SET image = ? WHERE id = ?`
-            db.query(queryStr, [image, id], (err, data) =>{
-                if(!err){
+            db.query(queryStr, [image, id], (err, data) => {
+                if (!err) {
                     resolve({
-                        status:200,
-                        message:'Berhasil mengubah photo profil'
+                        status: 200,
+                        message: 'Berhasil mengubah photo profil'
                     })
-                }else{
+                } else {
                     console.log(err)
                     reject({
-                        status:500,
-                        message:'internal server error',
-                        details:err
+                        status: 500,
+                        message: 'internal server error',
+                        details: err
                     })
                 }
             })

@@ -5,7 +5,7 @@ module.exports = {
     getBalance: (id) => {
         return new Promise((resolve, reject) => {
             const queryStr =
-                `SELECT u.id, CONCAT(u.firstname,' ', u.lastname) as name , b.balance 
+                `SELECT u.id, CONCAT(u.firstname,' ', u.lastname) as name , u.phone, b.balance 
             FROM tb_balance b
             JOIN tb_user u ON b.id_user = u.id 
             WHERE u.id = ?`
@@ -28,26 +28,28 @@ module.exports = {
             })
         })
     },
-    getBalanceInOut: (id, additionalQuery,flow) => {
+    getBalanceInOut: (id, additionalQuery, flow) => {
         let user = ''
-        if(flow == 'in'){
+        let joinTable = ''
+        if (flow == 'in') {
             user = 't.receiver'
-        }else{
+            joinTable = `JOIN tb_user u ON u.id = t.sender`
+        } else {
             user = 't.sender'
+            joinTable = `JOIN tb_user u ON u.id = t.receiver`
         }
         return new Promise((resolve, reject) => {
             const queryStr =
-                `SELECT t.id,t.sender, CONCAT(u.firstname,' ',u.lastname) as sender, t.receiver, CONCAT(us.firstname,' ', us.lastname) as receiver, t.amount,t.notes, tp.type, t.created_at
+                `SELECT t.id,t.sender, t.receiver, CONCAT(u.firstname,' ', u.lastname) as name,u.phone, u.image,tp.type,t.amount,t.notes, t.created_at
             FROM tb_tranfer t
-            JOIN tb_user u ON u.id = t.sender
-            JOIN tb_user us ON us.id = t.receiver
+            ${joinTable}
             JOIN tb_type_transfer tp ON t.type = tp.id
             WHERE ${user} = ? AND tp.type = '${flow}'
             ${additionalQuery}
             ORDER BY t.created_at DESC
             LIMIT 7 OFFSET 0
             `
-            console.log(queryStr)
+            // console.log(queryStr)
             db.query(queryStr, id, (err, data) => {
                 if (!err) {
                     if (data.length > 0) {

@@ -53,7 +53,8 @@ module.exports = {
                 receiver: id,
                 amount: amount,
                 notes:`Topup Balance`,
-                type: 2
+                type: 2,
+                created_at:new Date(Date.now())
             }
             const queryStr = `INSERT INTO tb_tranfer SET ?`
             db.query(queryStr, dataTranfer, (err, data) => {
