@@ -4,11 +4,12 @@ module.exports = {
     postNewTranfer: (sender, receiver, amount, notes) => {
         return new Promise((resolve, reject) => {
             let dataTranfer = {
-                sender: sender,
-                receiver: receiver,
-                amount: amount,
+                sender: parseInt(sender),
+                receiver: parseInt(receiver),
+                amount: parseInt(amount),
                 notes:notes,
-                type: 1
+                type: 1,
+                created_at:new Date(Date.now())
             }
             const queryStr = `INSERT INTO tb_tranfer SET ?`
             db.query(queryStr, dataTranfer, (err, data) => {
@@ -21,7 +22,8 @@ module.exports = {
                         if (!err) {
                             resolve({
                                 status: 200,
-                                message: `Tranfer sukses`
+                                message: `Tranfer sukses`,
+                                details:dataTranfer
                             })
                         } else {
                             reject({

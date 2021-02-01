@@ -6,13 +6,14 @@ module.exports = {
         const { receiver, amount, notes } = req.body
         tranferModel.postNewTranfer(sender, receiver, amount, notes)
             .then((result) => {
+                const {details} = result
                 Promise.all([
                     tranferModel.reduceBalance(sender, amount),
                     tranferModel.increaseBalance(receiver, amount)
                 ]).then((result) => {
                     res.status(200).json({
-                        status: 200,
-                        message: `Tranfer berhasil, saldo anda berkurang ${amount}`
+                        ...result[1],
+                        details
                     })
                 }).catch((error) => {
                     res.status(error.status).json(error)
@@ -41,3 +42,22 @@ module.exports = {
             })
     },
 }
+
+
+// state = {
+//     recipient:0,
+//     detailRecipient:{}
+// }
+
+// axios.get(URL)
+// .then(({data}) =>{
+//     this.setState({
+//         recipient: data.data.recipient
+//     })
+//     axios.get(URL+this.state.recipient)
+//     .then(({data}) =>{
+//         this.setState({
+//             detailRecipient:data.data
+//         })
+//     })
+// })
