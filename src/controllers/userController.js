@@ -2,6 +2,15 @@ const userModel = require('../models/userModel')
 const fs = require('fs')
 
 module.exports = {
+    getMyUser: (req, res) => {
+        const { id } = req.decodedToken
+        userModel.getMyUser(id)
+            .then((result) => {
+                res.status(result.status).json(result)
+            }).catch((error) => {
+                res.status(error.status).json(error)
+            })
+    },
     getSingleUser: (req, res) => {
         const { id } = req.params
         userModel.getSingleUser(id)

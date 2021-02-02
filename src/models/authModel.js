@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const otp = require('otp-generator')
 const nodemailer = require('nodemailer')
+const { query } = require('express')
 
 module.exports = {
     authSignup: (body) => {
@@ -478,6 +479,28 @@ module.exports = {
                         details: err
                     })
                 }
+            })
+        })
+    },
+    resetPassword: (body) => {
+        return new Promise((resolve, reject) => {
+            const saltRounds = Math.floor(Math.random() * 10) + 1
+            bcrypt.hash(body.password, saltRounds, (err, hashedPassword) => {
+                const queryStr = `UPDATE tb_user SET password = ? WHERE email = ?`
+                db.query(queryStr, [hashedPassword, body.email], (err, data) => {
+                    if (!err) {
+                        resolve({
+                            status: 200,
+                            message: 'Password berhasil diubah'
+                        })
+                    } else {
+                        reject({
+                            status: 500,
+                            message: 'internal server error',
+                            details: err
+                        })
+                    }
+                })
             })
         })
     },

@@ -1,8 +1,26 @@
 const db = require('../config/mySQL')
 const bcrypt = require('bcrypt')
-const { query } = require('express')
 
 module.exports = {
+    getMyUser: (id) => {
+        return new Promise((resolve, reject) => {
+            const queryStr = `SELECT firstname, lastname, email, phone FROM tb_user WHERE id = ?`
+            db.query(queryStr, id, (err, data) => {
+                if (!err) {
+                    resolve({
+                        status: 200,
+                        message: `OK`,
+                        data: data[0]
+                    })
+                } else {
+                    reject({
+                        status: 500,
+                        message: err
+                    })
+                }
+            })
+        })
+    },
     getSingleUser: (id) => {
         return new Promise((resolve, reject) => {
             const queryStr = `SELECT CONCAT(firstname,' ',lastname) as name, phone, image FROM tb_user WHERE id = ?`

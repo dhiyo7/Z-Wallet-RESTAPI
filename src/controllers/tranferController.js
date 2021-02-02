@@ -58,12 +58,12 @@ module.exports = {
 //     detailRecipient:{}
 // }
 
-// axios.get(URL)
+// axios.get(URL_tranfer)
 // .then(({data}) =>{
 //     this.setState({
 //         recipient: data.data.recipient
 //     })
-//     axios.get(URL+this.state.recipient)
+//     axios.get(URL_getUserId+this.state.recipient)
 //     .then(({data}) =>{
 //         this.setState({
 //             detailRecipient:data.data

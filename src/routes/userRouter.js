@@ -5,7 +5,7 @@ const userRouter = express.Router()
 const checkToken = require('../helpers/checkToken')
 const imageUpload = require ('../helpers/uploadImg')
 
-
+userRouter.get('/myProfile', checkToken.isLogin, userController.getMyUser)
 userRouter.patch('/changePassword',checkToken.isLogin, userController.changePassword)
 userRouter.get('/:id', checkToken.isLogin, userController.getSingleUser)
 userRouter.patch('/changeInfo',checkToken.isLogin, checkToken.phoneUsed,userController.ChangePersonalInfo)

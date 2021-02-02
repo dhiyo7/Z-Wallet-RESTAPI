@@ -15,6 +15,7 @@ authRouter.get('/checkPIN/:PIN', checkToken.isLogin, authController.CheckPIN)
 
 authRouter.post('/forgot', authController.ForgotEmail)
 authRouter.post('/findOTP', authController.CheckOTP)
+authRouter.patch('/reset', authController.resetPassword)
 authRouter.delete('/logout/:token',checkToken.isLogin, authController.deleteTokenLogout)
 
 module.exports = authRouter

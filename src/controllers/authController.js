@@ -75,6 +75,15 @@ module.exports = {
                 res.status(error.status).json(error)
             })
     },
+    resetPassword: (req, res) => {
+        const { body } = req
+        authModel.resetPassword(body)
+            .then((result) => {
+                res.status(result.status).json(result)
+            }).catch((error) => {
+                res.status(error.status).json(error)
+            })
+    },
     deleteTokenLogout: (req, res) => {
         // const token = req.header("x-access-token"); //
         const { token } = req.params
