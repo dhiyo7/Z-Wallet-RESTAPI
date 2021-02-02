@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 module.exports = {
     getMyUser: (id) => {
         return new Promise((resolve, reject) => {
-            const queryStr = `SELECT firstname, lastname, email, phone FROM tb_user WHERE id = ?`
+            const queryStr = `SELECT firstname, lastname, email, phone, image FROM tb_user WHERE id = ?`
             db.query(queryStr, id, (err, data) => {
                 if (!err) {
                     resolve({
