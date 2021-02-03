@@ -9,6 +9,8 @@ const http = require('http')
 const server = http.createServer(app)
 const socketio = require("socket.io")
 const io = socketio(server).sockets
+
+global.io = io
  
 
 io.on("connection", (socket) => {
