@@ -23,12 +23,13 @@ io.on("connection", (socket) => {
   //   console.log(msg)
   //   io.to(id_recipient).to(id).emit("chat message", msg);
   // });
-  socket.on('transfer', (amount,sender,recipient) =>{
-    console.log('sender = '+sender)
-    console.log('recipient = '+recipient)
-    console.log('amount = '+amount)
-    socket.to(sender).emit("tranfer", `Transaksi berhasil, saldo anda berkurang ${amount}`)
-    socket.to(recipient).emit("tranfer", `${sender} mengirim dana sebesar ${amount}`)
+  socket.on('transfer', (event) =>{
+    console.log('sender = '+event.sender)
+    console.log('recipient = '+event.recipient)
+    console.log('amount = '+event.amount)
+    console.log('notes ='+event.notes)
+    io.to(event.id).emit("tranferOut", `Transaksi berhasil, saldo anda berkurang ${event.amount}`)
+    io.to(event.recipient).emit("tranferIn", `${event.sender} mengirim dana sebesar ${event.amount}`)
   });
 });
 
