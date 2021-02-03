@@ -46,7 +46,7 @@ module.exports = {
             JOIN tb_type_transfer tp ON t.type = tp.id
             WHERE ${user} = ? AND tp.type = '${flow}'
             ${additionalQuery}
-            ORDER BY t.created_at DESC
+            ORDER BY t.id DESC
             LIMIT 7 OFFSET 0
             `
             // console.log(queryStr)

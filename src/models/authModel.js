@@ -10,7 +10,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
             const saltRounds = Math.floor(Math.random() * 10) + 1
             bcrypt.hash(body.password, saltRounds, (err, hashedPassword) => { //hashPW
-                const newUser = { ...body, password: hashedPassword }
+                const newUser = { ...body, password: hashedPassword,firstname:body.username,lastname:body.username }
                 const queryStr = `INSERT INTO tb_user SET ?`
                 db.query(queryStr, newUser, (err, data) => {
                     if (!err) {
