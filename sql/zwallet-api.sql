@@ -32,7 +32,7 @@ CREATE TABLE `tb_balance` (
   `id` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
   `balance` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tb_balance`
@@ -74,7 +74,7 @@ INSERT INTO `tb_balance` (`id`, `id_user`, `balance`) VALUES
 CREATE TABLE `tb_login_token` (
   `id` int(11) NOT NULL,
   `token` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tb_login_token`
@@ -170,7 +170,7 @@ CREATE TABLE `tb_otp_activation` (
   `id` int(11) NOT NULL,
   `email` varchar(255) NOT NULL,
   `otp` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tb_otp_activation`
@@ -206,7 +206,7 @@ CREATE TABLE `tb_otp_reset` (
   `id` int(11) NOT NULL,
   `email` varchar(255) NOT NULL,
   `otp` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tb_otp_reset`
@@ -229,7 +229,7 @@ CREATE TABLE `tb_tranfer` (
   `notes` varchar(255) NOT NULL,
   `type` int(11) NOT NULL,
   `created_at` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tb_tranfer`
@@ -363,7 +363,7 @@ INSERT INTO `tb_tranfer` (`id`, `sender`, `receiver`, `amount`, `notes`, `type`,
 CREATE TABLE `tb_type_transfer` (
   `id` int(11) NOT NULL,
   `type` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tb_type_transfer`
@@ -390,7 +390,7 @@ CREATE TABLE `tb_user` (
   `pin` int(6) NOT NULL DEFAULT '0',
   `image` varchar(255) NOT NULL DEFAULT '/images/default.jpg',
   `is_active` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tb_user`
