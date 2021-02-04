@@ -5,7 +5,7 @@ module.exports = {
     getBalance: (id) => {
         return new Promise((resolve, reject) => {
             const queryStr =
-                `SELECT u.id, CONCAT(u.firstname,' ', u.lastname) as name , u.phone, b.balance 
+                `SELECT u.id, CONCAT(u.firstname,' ', u.lastname) as name , u.phone, b.balance , u.image
             FROM tb_balance b
             JOIN tb_user u ON b.id_user = u.id 
             WHERE u.id = ?`
@@ -46,7 +46,7 @@ module.exports = {
             JOIN tb_type_transfer tp ON t.type = tp.id
             WHERE ${user} = ? AND tp.type = '${flow}'
             ${additionalQuery}
-            ORDER BY t.created_at DESC
+            ORDER BY t.id DESC
             LIMIT 7 OFFSET 0
             `
             // console.log(queryStr)

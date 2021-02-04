@@ -98,7 +98,7 @@ module.exports = {
                 try {
                     decodedToken = jsonwebtoken.verify(result, process.env.SECRET_KEY)
                     req.decodedToken = decodedToken
-                    console.log(req.decodedToken)
+                    // console.log(req.decodedToken)
                     next()
                 } catch (err) {
                     res.status(401).json({

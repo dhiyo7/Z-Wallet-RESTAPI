@@ -60,7 +60,7 @@ module.exports = {
             let newTranfer = result[0].data.concat(result[1].data)
             
             newTranfer = newTranfer.sort((a, b) => { //sort date desc
-                return b.created_at - a.created_at
+                return b.id - a.id
             })
             newTranfer = newTranfer.filter((value, index) =>{
                 return index < 7  // biar cuma 7
