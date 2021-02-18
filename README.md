@@ -189,7 +189,7 @@ Frontend Zwallet App that use this RESTful API.
 
   
 
-<a  href="https://github.com/GasPoll-Team/Z-Wallet-React-Native">
+<a  href="https://github.com/ariefw96/Z-Wallet-React-Native">
 
 <img  src="https://img.shields.io/badge/Zwallet%20Frontend-Repository-blue.svg?style=popout&logo=github"/>
 
