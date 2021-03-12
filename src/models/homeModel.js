@@ -49,7 +49,7 @@ module.exports = {
             ORDER BY t.id DESC
             LIMIT 7 OFFSET 0
             `
-            // console.log(queryStr)
+			console.log(queryStr)
             db.query(queryStr, id, (err, data) => {
                 if (!err) {
                     if (data.length > 0) {
